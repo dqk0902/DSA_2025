@@ -13,10 +13,13 @@ def create(n):
         else:
             odd_index.append(i)
     
+    ## first round of removing
     for index in odd_index:
         removed_list.append(circle[index])
     for index in range(1, len(odd_index)+1):
         circle.pop(index)
+
+    ## remaining rounds of removing
     while len(circle) > 0:
         for index in even_index:
             if index < len(even_index) and index < len(circle):
