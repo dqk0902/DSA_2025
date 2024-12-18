@@ -1,11 +1,7 @@
 def count(a, b):
-    index_a = []
     index_b = []
     b_dict = {}
     count = 0
-
-    for i in range(len(a)):
-        index_a.append(i)
     
     for i in range(len(b)):
         b_dict[b[i]] = i
@@ -13,7 +9,7 @@ def count(a, b):
     for i in a:
         index_b.append(b_dict[i])
     
-    for i in index_a:
+    for i in range(len(a)):
         if i < index_b[i]:
             count += 1
     
