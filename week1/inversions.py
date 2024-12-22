@@ -12,6 +12,6 @@ def count(t):
 
 if __name__ == "__main__":
     print(count([1,3,2])) # 1
-    print(count([1])) # 0
-    print(count([4,3,2,1])) # 6
+    print(count([5,4,3,1,2])) # 9
+    print(count([1,2,3,4,5,6,7])) # 0
     print(count([1,8,2,7,3,6,4,5])) # 12
