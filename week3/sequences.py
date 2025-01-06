@@ -2,7 +2,6 @@ def count(s):
     n = len(s)
     ## sliding window
     left = 0
-    right = 0
     count = 0
     char_count = {'t': 0, 'i': 0, 'r': 0, 'a': 0}
 
