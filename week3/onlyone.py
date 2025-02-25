@@ -1,20 +1,24 @@
-def find(t):
-    result = 0
-
-    for i in range(1,len(t)):
-        if t[i] == t[i-1]:
-            result = t[i]
-    
+def find_number(t):
+    unique = set(t)
+    result = t[0]
+    count = 0
 
     for i in range(len(t)):
-        if t[i] != result:
-            result = t[i]
-            break
+        if t[i] == t[0]:
+            count += 1
+    
+    if count > 1:
+        result = unique.difference({t[0]}).pop()
     
     return result
 
 if __name__ == "__main__":
-    print(find([1,1,2,1])) # 2
-    print(find([4,5,5])) # 4
-    print(find([1,1,1,1,2])) # 2
-    print(find([8,8,5,8,8])) # 5
+    print(find_number([1, 1, 1, 2])) # 2
+    print(find_number([1, 1, 2, 1])) # 2
+    print(find_number([1, 2, 1, 1])) # 2
+    print(find_number([2, 1, 1, 1])) # 2
+    print(find_number([1,5,5])) # 1
+    print(find_number([1, 100, 1])) # 100
+
+    numbers = [1] * 10**5 + [2]
+    print(find_number(numbers)) # 2
