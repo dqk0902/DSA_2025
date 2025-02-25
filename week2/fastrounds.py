@@ -1,18 +1,12 @@
 def count_rounds(numbers):
-    if not numbers:
-        return 0
+    if len(numbers) <= 1:
+        return len(numbers)
 
-    rounds = 0
-    next_expected = 1
-    max_num = max(numbers)
+    rounds = 1
+    index_map = {num: idx for idx, num in enumerate(numbers)}
 
-    while next_expected <= max_num:
-        found = False
-        for num in numbers:
-            if num == next_expected:
-                found = True
-                next_expected += 1
-        if found:
+    for num in numbers:
+        if num + 1 in index_map and index_map[num] > index_map[num + 1]:
             rounds += 1
 
     return rounds
