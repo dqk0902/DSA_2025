@@ -5,12 +5,12 @@ def find_profits(prices):
     profits = []
     min_price = prices[0] 
 
-    for price in prices:
-        profit = max(0, price - min_price)
+    for i in range(len(prices)):
+        profit = max(0, prices[i] - min_price)
         profits.append(profit)
 
-        if price < min_price:
-            min_price = price
+        if prices[i] < min_price:
+            min_price = prices[i]
 
     return profits
 
