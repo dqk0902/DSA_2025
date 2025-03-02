@@ -1,38 +1,33 @@
 def calculate(input, rules):
-    string = "L" + input + "R"
+    symbols = ["L"] + list(input) + ["R"]
 
-    tape = list(string)
-    
+    pos = 0
     state = 1
-    position = 0
-    
-    rule_dict = {}
-    for symbol, current_state, new_symbol, new_state, action in rules:
-        rule_dict[(symbol, current_state)] = (new_symbol, new_state, action)
-    
-    for _ in range(1000):
-        if position < 0 or position >= len(tape):
+    counter = 0
+
+    while True:
+        found = False
+
+        for old_symbol, old_state, new_symbol, new_state, action in rules:
+            if symbols[pos] == old_symbol and state == old_state:
+                found = True
+                counter += 1
+
+                symbols[pos] = new_symbol
+                state = new_state
+
+                if action == "RIGHT": pos += 1
+                if action == "LEFT": pos -= 1
+                if action == "ACCEPT": return True
+                if action == "REJECT": return False
+
+                if pos < 0 or pos >= len(symbols):
+                    return False
+
+                break
+
+        if not found or counter == 1000:
             return False
-        
-        current_symbol = tape[position]
-        
-        if (current_symbol, state) not in rule_dict:
-            return False
-        
-        new_symbol, new_state, action = rule_dict[(current_symbol, state)]
-        tape[position] = new_symbol
-        state = new_state
-        
-        if action == "LEFT":
-            position -= 1
-        elif action == "RIGHT":
-            position += 1
-        elif action == "ACCEPT":
-            return True
-        elif action == "REJECT":
-            return False
-    
-    return False
 
 if __name__ == "__main__":
     rules = []
