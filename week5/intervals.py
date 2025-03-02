@@ -1,22 +1,19 @@
 import random
-
 def count_nested(intervals):
-    if not intervals:
-        return 0
+    def sort_key(interval):
+        return (interval[0], -interval[1])
 
-    sorted_intervals = sorted(intervals, key=lambda x: (x[1], -x[0]))
-    
-    stack = []
-    nested_count = 0
+    intervals = sorted(intervals, key=sort_key)
 
-    for start, end in sorted_intervals:
-        while stack and stack[-1][0] >= start:
-            nested_count += 1
-            stack.pop()
-        
-        stack.append((start, end))
+    count = 0
+    max_right = 0
 
-    return nested_count
+    for left, right in intervals:
+        if right <= max_right:
+            count += 1
+        max_right = max(max_right, right)
+
+    return count
 
 if __name__ == "__main__":
     print(count_nested([])) # 0
