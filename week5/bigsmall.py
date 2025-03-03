@@ -4,9 +4,10 @@ def count_pairs(numbers):
     count = 0
     n = len(sorted_numbers)
     result = []
+    max_count = n // 2
     
     while small < n and large < n:
-        if 2 * sorted_numbers[small] <= sorted_numbers[large]:
+        if 2 * sorted_numbers[small] <= sorted_numbers[large] and count < max_count:
             result.append((sorted_numbers[small], sorted_numbers[large]))
             count += 1
             small += 1 
@@ -14,7 +15,7 @@ def count_pairs(numbers):
         else:
             large += 1
 
-    return set(result), count
+    return count
 
 if __name__ == "__main__":
     print(count_pairs([1])) # 0
