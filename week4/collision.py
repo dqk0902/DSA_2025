@@ -15,30 +15,25 @@ def hash_value(string):
     return result % M
 
 def find_other(string):
-    A = 23
-    M = 2**32
     target_hash = hash_value(string)
-
-    def backtrack(current_string, current_hash):
-        if current_hash == target_hash and current_string != string:
-            return current_string
-        
-        if len(current_string) >= 10:
+    
+    def generate_string(prefix, remaining_length, current_hash):
+        if remaining_length == 0:
+            if current_hash == target_hash and prefix != string:
+                return prefix
             return None
-
-        for char in 'abcdefghijklmnopqrstuvwxyz':
-            new_string = current_string + char
-            char_value = ord(char) - ord('a')
-            new_hash = (current_hash * A + char_value) % M
-            
-            result = backtrack(new_string, new_hash)
+        
+        start_char = ord('a') if len(prefix) > 0 else ord(string[0])
+        for char_code in range(start_char, ord('z') + 1):
+            char = chr(char_code)
+            new_hash = (current_hash * 23 + (char_code - ord('a'))) % (2**32)
+            result = generate_string(prefix + char, remaining_length - 1, new_hash)
             if result:
                 return result
-
         return None
 
-    result = backtrack('', 0)
-    return result if result else 'notfound'
+    # Try strings of the same length as the input
+    return generate_string('', len(string), 0) or 'notfound'
 
 if __name__ == "__main__":
     string1 = "vutiwg"
