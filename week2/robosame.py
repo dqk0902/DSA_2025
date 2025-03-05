@@ -31,76 +31,47 @@ def calculate(input, rules):
 
 def create_rules():
     rules = []
+    
+    # Start state: Move right to the first symbol
     rules.append(("L", 1, "L", 2, "RIGHT"))
     
-    rules.append(("0", 2, "A", 3, "RIGHT"))
-    rules.append(("1", 2, "B", 4, "RIGHT"))
+    # State 2: Read and mark the first symbol
+    rules.append(("0", 2, "X", 3, "RIGHT"))  # Mark 0 as X and move to state 3
+    rules.append(("1", 2, "Y", 4, "RIGHT"))  # Mark 1 as Y and move to state 4
+    rules.append(("R", 2, "R", 8, "ACCEPT"))  # If no symbols, accept (empty string)
     
+    # State 3: Process 0s (move right until end)
     rules.append(("0", 3, "0", 3, "RIGHT"))
     rules.append(("1", 3, "1", 3, "RIGHT"))
-    rules.append(("A", 3, "A", 3, "RIGHT"))
-    rules.append(("B", 3, "B", 3, "RIGHT"))
-    rules.append(("C", 3, "C", 3, "RIGHT"))
-    rules.append(("D", 3, "D", 3, "RIGHT"))
-    rules.append(("R", 3, "R", 5, "LEFT"))
+    rules.append(("R", 3, "R", 5, "LEFT"))  # At end, move left to mark a 0
     
+    # State 4: Process 1s (move right until end)
     rules.append(("0", 4, "0", 4, "RIGHT"))
     rules.append(("1", 4, "1", 4, "RIGHT"))
-    rules.append(("A", 4, "A", 4, "RIGHT"))
-    rules.append(("B", 4, "B", 4, "RIGHT"))
-    rules.append(("C", 4, "C", 4, "RIGHT"))
-    rules.append(("D", 4, "D", 4, "RIGHT"))
-    rules.append(("R", 4, "R", 6, "LEFT"))
+    rules.append(("R", 4, "R", 6, "LEFT"))  # At end, move left to mark a 1
     
-    rules.append(("0", 5, "C", 7, "LEFT"))
-    rules.append(("1", 5, "1", 5, "LEFT"))
-    rules.append(("A", 5, "A", 5, "LEFT"))
-    rules.append(("B", 5, "B", 5, "LEFT"))
-    rules.append(("C", 5, "C", 5, "LEFT"))
-    rules.append(("D", 5, "D", 5, "LEFT"))
+    # State 5: Mark the rightmost 0 as X
+    rules.append(("0", 5, "X", 7, "LEFT"))  # Mark 0 as X and move left
+    rules.append(("1", 5, "1", 5, "LEFT"))  # Skip 1s
+    rules.append(("X", 5, "X", 5, "LEFT"))  # Skip Xs
+    rules.append(("Y", 5, "Y", 5, "LEFT"))  # Skip Ys
     
-    rules.append(("1", 6, "D", 7, "LEFT"))
-    rules.append(("0", 6, "0", 6, "LEFT"))
-    rules.append(("A", 6, "A", 6, "LEFT"))
-    rules.append(("B", 6, "B", 6, "LEFT"))
-    rules.append(("C", 6, "C", 6, "LEFT"))
-    rules.append(("D", 6, "D", 6, "LEFT"))
+    # State 6: Mark the rightmost 1 as Y
+    rules.append(("1", 6, "Y", 7, "LEFT"))  # Mark 1 as Y and move left
+    rules.append(("0", 6, "0", 6, "LEFT"))  # Skip 0s
+    rules.append(("X", 6, "X", 6, "LEFT"))  # Skip Xs
+    rules.append(("Y", 6, "Y", 6, "LEFT"))  # Skip Ys
     
+    # State 7: Move left to find the next unmarked symbol
     rules.append(("0", 7, "0", 7, "LEFT"))
     rules.append(("1", 7, "1", 7, "LEFT"))
-    rules.append(("A", 7, "A", 7, "LEFT"))
-    rules.append(("B", 7, "B", 7, "LEFT"))
-    rules.append(("C", 7, "C", 7, "LEFT"))
-    rules.append(("D", 7, "D", 7, "LEFT"))
-    rules.append(("L", 7, "L", 8, "RIGHT"))
+    rules.append(("X", 7, "X", 7, "LEFT"))
+    rules.append(("Y", 7, "Y", 7, "LEFT"))
+    rules.append(("L", 7, "L", 2, "RIGHT"))  # At start, move right to process next symbol
     
-    rules.append(("A", 8, "A", 8, "RIGHT"))
-    rules.append(("B", 8, "B", 8, "RIGHT"))
-    rules.append(("C", 8, "C", 8, "RIGHT"))
-    rules.append(("D", 8, "D", 8, "RIGHT"))
-    rules.append(("0", 8, "A", 3, "RIGHT")) 
-    rules.append(("1", 8, "B", 4, "RIGHT")) 
-    rules.append(("R", 8, "R", 9, "LEFT")) 
-    
-    rules.append(("A", 9, "A", 9, "LEFT"))
-    rules.append(("B", 9, "B", 9, "LEFT"))
-    rules.append(("C", 9, "C", 9, "LEFT"))
-    rules.append(("D", 9, "D", 9, "LEFT"))
-    rules.append(("0", 9, "0", 10, "LEFT")) 
-    rules.append(("1", 9, "1", 10, "LEFT")) 
-    rules.append(("L", 9, "L", 11, "RIGHT")) 
-    
-
-    rules.append(("L", 10, "L", 10, "REJECT"))
-    
-
-    rules.append(("L", 11, "L", 11, "ACCEPT"))
-    
-
-    rules.append(("R", 2, "R", 10, "REJECT")) 
+    # State 8: Accept state (no rules needed)
     
     return rules
-
 if __name__ == "__main__":
     rules = create_rules()
     

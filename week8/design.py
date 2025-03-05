@@ -1,30 +1,33 @@
 def create_grid(steps):
-    if steps > 40:  # Maximum possible steps in a 10x10 grid
+    if steps > 80 or steps < 1:  # Maximum possible steps in a 10x10 grid
         return None
     
-    width = min(steps + 2, 10)
+    width = min(steps + 1, 10)
     height = min((steps // 2) + 3, 10)
     
-    grid = [['#' for _ in range(width)] for _ in range(height)]
+    # Create an empty grid
+    grid = ['#' * width for _ in range(height)]
     
+    # Create a path
     x, y = 1, height - 2
-    grid[y][x] = 'A'
+    grid[y] = grid[y][:x] + 'A' + grid[y][x+1:]
     
-    for i in range(steps - 1):
-        if i % 2 == 0:
-            x += 1
-        else:
-            y -= 1
-        grid[y][x] = '.'
+    directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+    for _ in range(steps - 1):
+        for dx, dy in directions:
+            new_x, new_y = x + dx, y + dy
+            if 0 < new_x < width - 1 and 0 < new_y < height - 1:
+                if grid[new_y][new_x] == '#':
+                    x, y = new_x, new_y
+                    row = list(grid[y])
+                    row[x] = '.'
+                    grid[y] = ''.join(row)
+                    break
     
-    grid[y][x] = 'B'
+    # Place B
+    grid[y] = grid[y][:x] + 'B' + grid[y][x+1:]
     
-    for i in range(1, height - 1):
-        for j in range(1, width - 1):
-            if grid[i][j] == '#':
-                grid[i][j] = '.'
-    
-    return [''.join(row) for row in grid]
+    return grid
 
 if __name__ == "__main__":
     grid = create_grid(5)

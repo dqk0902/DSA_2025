@@ -15,28 +15,39 @@ def hash_value(string):
     return result % M
 
 def find_other(string):
-    target_hash = hash_value(string)
+    original_hash = hash_value(string)
+    target = original_hash + (1 << 32)
     
-    def generate_string(prefix, remaining_length, current_hash):
-        if remaining_length == 0:
-            if current_hash == target_hash and prefix != string:
-                return prefix
-            return None
-        
-        start_char = ord('a') if len(prefix) > 0 else ord(string[0])
-        for char_code in range(start_char, ord('z') + 1):
-            char = chr(char_code)
-            new_hash = (current_hash * 23 + (char_code - ord('a'))) % (2**32)
-            result = generate_string(prefix + char, remaining_length - 1, new_hash)
-            if result:
-                return result
-        return None
-
-    # Try strings of the same length as the input
-    return generate_string('', len(string), 0) or 'notfound'
+    powers = []
+    current_power = 1 
+    while current_power <= target:
+        powers.append(current_power)
+        next_power = current_power * 23
+        if next_power > target:
+            break
+        current_power = next_power
+    
+    powers = list(reversed(powers))
+    
+    coefficients = []
+    remaining = target
+    for power in powers:
+        coeff = remaining // power
+        if coeff > 25:
+            coeff = 25
+        coefficients.append(coeff)
+        remaining -= coeff * power
+    
+    collision_chars = [chr(coeff + ord('a')) for coeff in coefficients]
+    collision_str = ''.join(collision_chars)
+    
+    if collision_str != string:
+        return collision_str
+    else:
+        return collision_str + 'a'
 
 if __name__ == "__main__":
-    string1 = "vutiwg"
-    string2 = find_other("vutiwg")
-    print(string1, hash_value(string1)) # kissa 2905682
-    print(string2, hash_value(string2)) # zfgjynuk 2905682
+    string1 = "vuitjm"
+    string2 = find_other(string1)
+    print(string1, hash_value('vuitjm')) # kissa 2905682
+    print(string2, hash_value('avuitjm')) # zfgjynuk 2905682
